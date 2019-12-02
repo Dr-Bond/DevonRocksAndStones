@@ -23,7 +23,16 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText editTextEmail, editTextPassword, editTextFirstName, editTextSurname, editDateOfBirth, editAddressLineOne, editAddressLineTwo, editTextCity, editTextCounty, editTextPostcode;
+    private EditText editTextEmail;
+    private EditText editTextPassword;
+    private EditText editTextFirstName;
+    private EditText editTextSurname;
+    private EditText editDateOfBirth;
+    private EditText editAddressLineOne;
+    private EditText editAddressLineTwo;
+    private EditText editTextCity;
+    private EditText editTextCounty;
+    private EditText editTextPostcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
+        //Check if user is signed in, if so, load profile
         if(SharedPrefManager.getInstance(this).isLoggedIn()){
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -57,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void userSignUp() {
+        //Assign fields to variables
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String firstName = editTextFirstName.getText().toString().trim();
@@ -68,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String county = editTextCounty.getText().toString().trim();
         String postcode = editTextPostcode.getText().toString().trim();
 
+        //Carry out validation
         if (email.isEmpty()) {
             editTextEmail.setError("Email is required");
             editTextEmail.requestFocus();
@@ -104,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
+        //Create user from fields, API call
         Call<DefaultResponse> call = RetrofitClient
                 .getInstance()
                 .getApi()
@@ -114,12 +127,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                 if (response.code() == 201) {
-
+                    //Success response, display message, move to login
                     DefaultResponse dr = response.body();
                     Toast.makeText(MainActivity.this, dr.getMsg(), Toast.LENGTH_LONG).show();
                     setContentView(R.layout.activity_login);
 
                 } else if (response.code() == 422) {
+                    //Failure response, user already exist, do nothing
                     Toast.makeText(MainActivity.this, "User Already Exist", Toast.LENGTH_LONG).show();
                 }
             }
@@ -142,9 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 userSignUp();
                 break;
             case R.id.textViewLogin:
-
                 startActivity(new Intent(this, LoginActivity.class));
-
                 break;
         }
     }
