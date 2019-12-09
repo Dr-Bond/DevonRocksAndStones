@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.jamie.devonrocksandstones.R;
 import com.jamie.devonrocksandstones.fragments.AddStoneFragment;
 import com.jamie.devonrocksandstones.fragments.HiddenStonesFragment;
@@ -26,6 +27,8 @@ public class ProfileActivity extends AppCompatActivity implements BottomNavigati
         setContentView(R.layout.activity_profile);
 
         BottomNavigationView navigationView = findViewById(R.id.bottom_nav);
+        //Force show bottom menu items.
+        navigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
         navigationView.setOnNavigationItemSelectedListener(this);
 
         displayFragment(new HomeFragment());
