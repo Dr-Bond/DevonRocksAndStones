@@ -19,7 +19,7 @@ public class DefaultResponse {
         return error;
     }
 
-    public String getMsg() {
+    public String getMessage() {
         return msg;
     }
 }

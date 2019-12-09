@@ -128,8 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                 if (response.code() == 201) {
                     //Success response, display message, move to login
-                    DefaultResponse dr = response.body();
-                    Toast.makeText(MainActivity.this, dr.getMsg(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
                     setContentView(R.layout.activity_login);
 
                 } else if (response.code() == 422) {

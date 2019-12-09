@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jamie.devonrocksandstones.R;
+import com.jamie.devonrocksandstones.fragments.AddStoneFragment;
 import com.jamie.devonrocksandstones.fragments.HiddenStonesFragment;
 import com.jamie.devonrocksandstones.fragments.HomeFragment;
 import com.jamie.devonrocksandstones.storage.SharedPrefManager;
@@ -56,6 +57,9 @@ public class ProfileActivity extends AppCompatActivity implements BottomNavigati
         switch(item.getItemId()){
             case R.id.menu_home:
                 fragment = new HomeFragment();
+                break;
+            case R.id.menu_add_stone:
+                fragment = new AddStoneFragment();
                 break;
             case R.id.menu_hidden_stones:
                 fragment = new HiddenStonesFragment();

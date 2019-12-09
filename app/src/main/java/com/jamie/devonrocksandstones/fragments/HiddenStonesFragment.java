@@ -64,10 +64,4 @@ public class HiddenStonesFragment extends Fragment {
         });
 
     }
-
-
-    public void markStoneAsFound() {
-
-
-    }
 }

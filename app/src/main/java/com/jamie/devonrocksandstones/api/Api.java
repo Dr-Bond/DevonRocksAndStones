@@ -14,7 +14,6 @@ import retrofit2.http.Path;
 
 public interface Api {
 
-
     @FormUrlEncoded
     @POST("register")
     Call<DefaultResponse> createUser(
@@ -42,4 +41,8 @@ public interface Api {
 
     @GET("stone/found/{id}")
     Call<DefaultResponse> foundStone(@Header("X-AUTH-TOKEN") String credentials, @Path("id") int id);
+
+    @FormUrlEncoded
+    @POST("stone/add")
+    Call<DefaultResponse> addStone(@Header("X-AUTH-TOKEN") String credentials, @Field("location") String location);
 }

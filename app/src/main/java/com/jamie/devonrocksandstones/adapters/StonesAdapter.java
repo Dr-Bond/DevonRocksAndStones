@@ -69,7 +69,7 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
                         }
 
                         //On success, return error message
-                        Toast.makeText(mCtx, response.body().getMsg(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(mCtx, response.body().getMessage(), Toast.LENGTH_LONG).show();
                     }
 
                     @Override

@@ -2,7 +2,6 @@ package com.jamie.devonrocksandstones.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -85,7 +84,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                Toast.makeText(LoginActivity.this, "Here2", Toast.LENGTH_LONG).show();
                 LoginResponse loginResponse = response.body();
 
                 if (!loginResponse.isError()) {
@@ -106,7 +104,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.d("myTag", t.getMessage());
                 Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
 
             }
