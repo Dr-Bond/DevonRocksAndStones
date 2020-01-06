@@ -21,16 +21,34 @@
                 android:text="Hidden"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
 
-            <Button
-                android:id="@+id/buttonFoundStone"
-                android:layout_width="180dp"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:background="#d10000"
-                android:text="Found Stone"
-                android:textAllCaps="false"
-                android:textColor="@color/colorFormBackground" />
+                android:layout_below="@+id/editTextContent"
+                android:layout_centerHorizontal="true">
+                <Button
+                    android:id="@+id/buttonStoneClues"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="View Clues"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorFormBackground" />
+                <Button
+                    android:id="@+id/buttonFoundStone"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_toRightOf="@+id/buttonStoneClues"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/colorDanger"
+                    android:text="Found Stone"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorFormBackground" />
+            </RelativeLayout>
 
         </LinearLayout>
 

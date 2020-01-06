@@ -14,6 +14,7 @@ import com.jamie.devonrocksandstones.R;
 import com.jamie.devonrocksandstones.fragments.AddStoneFragment;
 import com.jamie.devonrocksandstones.fragments.HiddenStonesFragment;
 import com.jamie.devonrocksandstones.fragments.HomeFragment;
+import com.jamie.devonrocksandstones.fragments.PostsFragment;
 import com.jamie.devonrocksandstones.storage.SharedPrefManager;
 
 
@@ -60,6 +61,9 @@ public class ProfileActivity extends AppCompatActivity implements BottomNavigati
         switch(item.getItemId()){
             case R.id.menu_home:
                 fragment = new HomeFragment();
+                break;
+            case R.id.menu_posts:
+                fragment = new PostsFragment();
                 break;
             case R.id.menu_add_stone:
                 fragment = new AddStoneFragment();

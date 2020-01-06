@@ -57,7 +57,7 @@ public class AddStoneFragment extends Fragment implements View.OnClickListener {
         //Get stored user
         User user = SharedPrefManager.getInstance(getActivity()).getUser();
 
-        //Api Call
+        //Api call
         Call<DefaultResponse> call = RetrofitClient.getInstance()
                 .getApi().addStone(
                         user.getAccessToken(),

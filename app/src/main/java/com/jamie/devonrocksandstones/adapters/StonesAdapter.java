@@ -1,6 +1,8 @@
 package com.jamie.devonrocksandstones.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jamie.devonrocksandstones.R;
+import com.jamie.devonrocksandstones.activities.ClueActivity;
 import com.jamie.devonrocksandstones.api.RetrofitClient;
 import com.jamie.devonrocksandstones.models.DefaultResponse;
 import com.jamie.devonrocksandstones.models.Stone;
@@ -33,6 +36,7 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
         this.mCtx = mCtx;
         this.stoneList = stoneList;
     }
+
 
     @NonNull
     @Override
@@ -81,6 +85,16 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
             }
         });
 
+        holder.buttonStoneClues.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Start new intent and pass stone ID to intent
+                Context context = v.getContext();
+                Intent intent = new Intent(context, ClueActivity.class);
+                intent.putExtra("stone",stoneList.get(position).getId());
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -93,12 +107,14 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
         //Create items for rows
         TextView textViewStatus;
         Button buttonFoundStone;
+        Button buttonStoneClues;
 
         public StonesViewHolder(View itemView) {
             super(itemView);
 
             textViewStatus = itemView.findViewById(R.id.textViewStatus);
             buttonFoundStone = itemView.findViewById(R.id.buttonFoundStone);
+            buttonStoneClues = itemView.findViewById(R.id.buttonStoneClues);
 
         }
     }

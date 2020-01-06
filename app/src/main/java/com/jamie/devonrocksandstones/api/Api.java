@@ -2,14 +2,19 @@ package com.jamie.devonrocksandstones.api;
 
 import com.jamie.devonrocksandstones.models.DefaultResponse;
 import com.jamie.devonrocksandstones.models.LoginResponse;
+import com.jamie.devonrocksandstones.models.PostResponse;
 import com.jamie.devonrocksandstones.models.StoneResponse;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface Api {
@@ -36,6 +41,9 @@ public interface Api {
             @Field("password") String password
     );
 
+    @GET("posts")
+    Call<PostResponse> getPosts(@Header("X-AUTH-TOKEN") String credentials);
+
     @GET("stone")
     Call<StoneResponse> getStones(@Header("X-AUTH-TOKEN") String credentials);
 
@@ -45,4 +53,8 @@ public interface Api {
     @FormUrlEncoded
     @POST("stone/add")
     Call<DefaultResponse> addStone(@Header("X-AUTH-TOKEN") String credentials, @Field("location") String location);
+
+    @Multipart
+    @POST("add-post")
+    Call<DefaultResponse> addPost(@Header("X-AUTH-TOKEN") String credentials, @Part MultipartBody.Part file, @Part("name") RequestBody requestBody, @Part("content") String content);
 }
