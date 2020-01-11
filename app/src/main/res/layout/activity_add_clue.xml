@@ -34,12 +34,12 @@
             android:text="Select Image" />
 
         <Button
-            android:id="@+id/buttonUploadPost"
+            android:id="@+id/buttonUploadClue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/buttonSelectImg"
-            android:text="Add Post" />
+            android:text="Add Clue" />
 
     </RelativeLayout>
 

@@ -1,5 +1,6 @@
 package com.jamie.devonrocksandstones.api;
 
+import com.jamie.devonrocksandstones.models.ClueResponse;
 import com.jamie.devonrocksandstones.models.DefaultResponse;
 import com.jamie.devonrocksandstones.models.LoginResponse;
 import com.jamie.devonrocksandstones.models.PostResponse;
@@ -47,7 +48,10 @@ public interface Api {
     @GET("stone")
     Call<StoneResponse> getStones(@Header("X-AUTH-TOKEN") String credentials);
 
-    @GET("stone/found/{id}")
+    @GET("stone/{stone}/clues/{location}")
+    Call<ClueResponse> getClues(@Header("X-AUTH-TOKEN") String credentials, @Path("stone") int id, @Path("location") int location);
+
+    @GET("stone/{id}/found")
     Call<DefaultResponse> foundStone(@Header("X-AUTH-TOKEN") String credentials, @Path("id") int id);
 
     @FormUrlEncoded
@@ -57,4 +61,8 @@ public interface Api {
     @Multipart
     @POST("add-post")
     Call<DefaultResponse> addPost(@Header("X-AUTH-TOKEN") String credentials, @Part MultipartBody.Part file, @Part("name") RequestBody requestBody, @Part("content") String content);
+
+    @Multipart
+    @POST("stone/{stone}/add-clue/{location}")
+    Call<DefaultResponse> addClue(@Header("X-AUTH-TOKEN") String credentials, @Path("stone") int id, @Path("location") int location, @Part MultipartBody.Part file, @Part("name") RequestBody requestBody, @Part("content") String content);
 }

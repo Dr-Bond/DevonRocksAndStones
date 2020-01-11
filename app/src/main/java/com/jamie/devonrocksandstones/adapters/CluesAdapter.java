@@ -13,69 +13,64 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.jamie.devonrocksandstones.R;
-import com.jamie.devonrocksandstones.models.Post;
+import com.jamie.devonrocksandstones.models.Clue;
 
 import java.util.List;
 
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHolder> {
+public class CluesAdapter extends RecyclerView.Adapter<CluesAdapter.CluesViewHolder> {
 
     private Context mCtx;
-    private List<Post> postList;
+    private List<Clue> clueList;
 
-    public PostsAdapter(Context mCtx, List<Post> postList) {
+    public CluesAdapter(Context mCtx, List<Clue> clueList) {
         this.mCtx = mCtx;
-        this.postList = postList;
+        this.clueList = clueList;
     }
 
     @NonNull
     @Override
-    public PostsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CluesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //Create view
-        View view = LayoutInflater.from(mCtx).inflate(R.layout.recyclerview_posts, parent, false);
-        return new PostsViewHolder(view);
+        View view = LayoutInflater.from(mCtx).inflate(R.layout.recyclerview_clues, parent, false);
+        return new CluesViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostsViewHolder holder,final int position) {
-        Post post = postList.get(position);
+    public void onBindViewHolder(@NonNull CluesViewHolder holder,final int position) {
+        Clue clue = clueList.get(position);
 
-        holder.textViewPostedBy.setText(post.getPostedBy());
-        holder.textViewContent.setText(post.getContent());
+        holder.textViewAddedBy.setText(clue.getAddedBy());
+        holder.textViewContent.setText(clue.getContent());
 
         //Check if image is null, if not null, download image and add to holder, if null, hide the holder
-        if(post.getImage() != null) {
-            Glide.with(mCtx).load(Uri.parse(post.getImage()))
+        if(clue.getImage() != null) {
+            Glide.with(mCtx).load(Uri.parse(clue.getImage()))
                     .thumbnail(0.5f)
                     .into(holder.imageViewStone);
         }
         else {
             holder.imageViewStone.setVisibility(View.GONE);
         }
-
     }
 
     @Override
     public int getItemCount() {
-        if(postList == null) {
-            return 0;
-        }
-        return postList.size();
+        return clueList.size();
     }
 
-    class PostsViewHolder extends RecyclerView.ViewHolder {
+    class CluesViewHolder extends RecyclerView.ViewHolder {
 
         //Create items for rows
-        TextView textViewPostedBy;
+        TextView textViewAddedBy;
         TextView textViewContent;
         ImageView imageViewStone;
 
-        public PostsViewHolder(View itemView) {
+        public CluesViewHolder(View itemView) {
             super(itemView);
 
-            textViewPostedBy = itemView.findViewById(R.id.textViewPostedBy);
+            textViewAddedBy = itemView.findViewById(R.id.textViewAddedBy);
             textViewContent = itemView.findViewById(R.id.textViewContent);
             imageViewStone = itemView.findViewById(R.id.imageViewStone);
-
         }
     }
 }

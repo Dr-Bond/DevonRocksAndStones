@@ -2,7 +2,6 @@ package com.jamie.devonrocksandstones.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +49,8 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
     public void onBindViewHolder(@NonNull StonesViewHolder holder,final int position) {
         Stone stone = stoneList.get(position);
 
-        holder.textViewStatus.setText(stone.getStatus());
+        holder.textViewStone.setText("Stone: "+stone.getId()+" - "+stone.getArea());
+        holder.textViewStatus.setText("Status: "+stone.getStatus());
 
         //Listen for found stone button to be clicked
         holder.buttonFoundStone.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +91,7 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
                 Context context = v.getContext();
                 Intent intent = new Intent(context, ClueActivity.class);
                 intent.putExtra("stone",stoneList.get(position).getId());
+                intent.putExtra("location",stoneList.get(position).getLocation());
                 context.startActivity(intent);
             }
         });
@@ -105,6 +106,7 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
     class StonesViewHolder extends RecyclerView.ViewHolder {
 
         //Create items for rows
+        TextView textViewStone;
         TextView textViewStatus;
         Button buttonFoundStone;
         Button buttonStoneClues;
@@ -112,6 +114,7 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
         public StonesViewHolder(View itemView) {
             super(itemView);
 
+            textViewStone = itemView.findViewById(R.id.textViewStone);
             textViewStatus = itemView.findViewById(R.id.textViewStatus);
             buttonFoundStone = itemView.findViewById(R.id.buttonFoundStone);
             buttonStoneClues = itemView.findViewById(R.id.buttonStoneClues);

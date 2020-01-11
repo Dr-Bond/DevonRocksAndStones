@@ -1,6 +1,8 @@
 package com.jamie.devonrocksandstones.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jamie.devonrocksandstones.R;
+import com.jamie.devonrocksandstones.activities.MainActivity;
+import com.jamie.devonrocksandstones.activities.ProfileActivity;
 import com.jamie.devonrocksandstones.api.RetrofitClient;
 import com.jamie.devonrocksandstones.models.DefaultResponse;
 import com.jamie.devonrocksandstones.models.User;
@@ -60,27 +64,26 @@ public class AddStoneFragment extends Fragment implements View.OnClickListener {
         //Api call
         Call<DefaultResponse> call = RetrofitClient.getInstance()
                 .getApi().addStone(
-                        user.getAccessToken(),
-                        location
+                    user.getAccessToken(),
+                    location
                 );
 
         call.enqueue(new Callback<DefaultResponse>() {
             @Override
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-
-                //Success message
-                Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_LONG).show();
-
-                //Error message
-                if (!response.body().isError()) {
-                    Toast.makeText(getActivity(), "Could not add stone", Toast.LENGTH_LONG).show();
-                }
-
+                //Stone hidden message
+                Toast.makeText(getActivity(), "Stone Hidden", Toast.LENGTH_SHORT).show();
+                //Take to hidden stones fragment
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("fragment","hidden_stones");
+                startActivity(intent);
             }
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
-
+                //Stone failed message
+                Toast.makeText(getActivity(), "Stone Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }

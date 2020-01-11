@@ -24,8 +24,8 @@
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.AddPostActivity" />
-        <activity android:name=".activities.ClueActivity"
-            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" />
+        <activity android:name=".activities.ClueActivity" />
+        <activity android:name=".activities.AddClueActivity" />
     </application>
 
 </manifest>

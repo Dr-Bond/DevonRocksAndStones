@@ -40,18 +40,25 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class AddPostActivity extends AppCompatActivity {
+public class AddClueActivity extends AppCompatActivity {
 
-    private Button btnUploadPost, btnSelectImage;
+    private Button btnUploadClue, btnSelectImage;
     private EditText editTextContent;
     private String mediaPath;
     private ImageView imgView;
     private ProgressDialog progressDialog;
+    private int stone;
+    private int location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_post);
+        setContentView(R.layout.activity_add_clue);
+
+        //Get stone and location id passed from previous activity
+        Bundle extras = getIntent().getExtras();
+        stone = extras.getInt("stone");
+        location = extras.getInt("location");
 
         //Get storage permissions
         requestPermissions();
@@ -61,12 +68,12 @@ public class AddPostActivity extends AppCompatActivity {
         progressDialog.setMessage("Uploading..");
 
         //Get view items
-        btnUploadPost = findViewById(R.id.buttonUploadPost);
+        btnUploadClue = findViewById(R.id.buttonUploadClue);
         btnSelectImage = findViewById(R.id.buttonSelectImg);
         editTextContent = findViewById(R.id.editTextContent);
         imgView = findViewById(R.id.imageView);
 
-        btnUploadPost.setOnClickListener(new View.OnClickListener() {
+        btnUploadClue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadFile();
@@ -107,10 +114,10 @@ public class AddPostActivity extends AppCompatActivity {
                 cursor.close();
 
             } else {
-                Toast.makeText(AddPostActivity.this, "Image not selected", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddClueActivity.this, "Image not selected", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-            Toast.makeText(AddPostActivity.this, "Post Failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(AddClueActivity.this, "Clue Failed", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -134,8 +141,10 @@ public class AddPostActivity extends AppCompatActivity {
 
         //Api call to upload file
         Call<DefaultResponse> call = RetrofitClient
-                .getInstance().getApi().addPost(
+                .getInstance().getApi().addClue(
                         user.getAccessToken(),
+                        stone,
+                        location,
                         fileToUpload,
                         filename,
                         content
@@ -146,14 +155,14 @@ public class AddPostActivity extends AppCompatActivity {
             public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                 //Dismiss progress bar once uploaded and display post added
                 progressDialog.dismiss();
-                Toast.makeText(AddPostActivity.this, "Post Added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddClueActivity.this, "Clue Added", Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
             public void onFailure(Call<DefaultResponse> call, Throwable t) {
-                //Post failed message
-                Toast.makeText(AddPostActivity.this, "Post Failed", Toast.LENGTH_SHORT).show();
+                //Clue failed message
+                Toast.makeText(AddClueActivity.this, "Clue Failed", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -163,8 +172,8 @@ public class AddPostActivity extends AppCompatActivity {
     private void  requestPermissions(){
         Dexter.withActivity(this)
             .withPermissions(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
             .withListener(new MultiplePermissionsListener() {
                 @Override
                 public void onPermissionsChecked(MultiplePermissionsReport report) {

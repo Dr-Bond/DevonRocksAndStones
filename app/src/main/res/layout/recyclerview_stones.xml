@@ -15,10 +15,17 @@
             android:padding="4dp">
 
             <TextView
+                android:id="@+id/textViewStone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stone"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
+
+            <TextView
                 android:id="@+id/textViewStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hidden"
+                android:text="Status"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
 
             <RelativeLayout

@@ -18,7 +18,7 @@ import com.jamie.devonrocksandstones.fragments.PostsFragment;
 import com.jamie.devonrocksandstones.storage.SharedPrefManager;
 
 
-public class ProfileActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener  {
+public class ProfileActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
 
     @Override
@@ -32,8 +32,31 @@ public class ProfileActivity extends AppCompatActivity implements BottomNavigati
         navigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
         navigationView.setOnNavigationItemSelectedListener(this);
 
-        displayFragment(new HomeFragment());
+        //Select fragment if fragment is passed as extra
+        Bundle extras = getIntent().getExtras();
+        if (getIntent().hasExtra("fragment")) {
+            String fragmentName = extras.getString("fragment");
+            Fragment fragment = null;
+            switch (fragmentName) {
+                case "home":
+                    fragment = new HomeFragment();
+                    break;
+                case "posts":
+                    fragment = new PostsFragment();
+                    break;
+                case "add_stone":
+                    fragment = new AddStoneFragment();
+                    break;
+                case "hidden_stones":
+                    fragment = new HiddenStonesFragment();
+                    break;
+            }
+            displayFragment(fragment);
+        } else {
+            displayFragment(new HomeFragment());
+        }
     }
+
 
     private void displayFragment(Fragment fragment) {
         getSupportFragmentManager()
