@@ -6,6 +6,7 @@ public class Post {
     private String content;
     private String postedBy;
     private String image;
+    private boolean deletable;
 
     public Post(int id, String content, String postedBy, String image) {
         this.id = id;
@@ -28,6 +29,10 @@ public class Post {
 
     public String getImage() {
         return image;
+    }
+
+    public boolean isDeletable() {
+        return deletable;
     }
 
 }

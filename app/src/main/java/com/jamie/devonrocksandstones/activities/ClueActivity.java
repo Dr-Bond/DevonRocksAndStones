@@ -43,8 +43,10 @@ public class ClueActivity extends AppCompatActivity implements View.OnClickListe
         stone = extras.getInt("stone");
         location = extras.getInt("location");
 
-        Button b = findViewById(R.id.buttonAddClue);
-        b.setOnClickListener(this);
+        Button addClue = findViewById(R.id.buttonAddClue);
+        addClue.setOnClickListener(this);
+        Button backToStones = findViewById(R.id.buttonBackToStones);
+        backToStones.setOnClickListener(this);
 
         User user = SharedPrefManager.getInstance(ClueActivity.this).getUser();
         Call<ClueResponse> call = RetrofitClient.getInstance().getApi().getClues(user.getAccessToken(),stone,location);
@@ -72,11 +74,17 @@ public class ClueActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.buttonAddClue:
                 //Start new intent and pass stone id
-                Intent intent = new Intent(ClueActivity.this, AddClueActivity.class);
-                intent.putExtra("stone",stone);
-                intent.putExtra("location",location);
-                startActivity(intent);
+                Intent clueIntent = new Intent(ClueActivity.this, AddClueActivity.class);
+                clueIntent.putExtra("stone",stone);
+                clueIntent.putExtra("location",location);
+                startActivity(clueIntent);
                 break;
+            case R.id.buttonBackToStones:
+                Intent fragmentIntent = new Intent(ClueActivity.this, ProfileActivity.class);
+                fragmentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                fragmentIntent.putExtra("fragment","hidden_stones");
+                startActivity(fragmentIntent);
+            break;
         }
     }
 

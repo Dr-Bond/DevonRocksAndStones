@@ -9,6 +9,7 @@ import com.jamie.devonrocksandstones.models.StoneResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -42,7 +43,7 @@ public interface Api {
             @Field("password") String password
     );
 
-    @GET("posts")
+    @GET("post")
     Call<PostResponse> getPosts(@Header("X-AUTH-TOKEN") String credentials);
 
     @GET("stone")
@@ -51,16 +52,23 @@ public interface Api {
     @GET("stone/{stone}/clues/{location}")
     Call<ClueResponse> getClues(@Header("X-AUTH-TOKEN") String credentials, @Path("stone") int id, @Path("location") int location);
 
-    @GET("stone/{id}/found")
-    Call<DefaultResponse> foundStone(@Header("X-AUTH-TOKEN") String credentials, @Path("id") int id);
+    @GET("stone/{stone}/found/{location}")
+    Call<DefaultResponse> foundStone(@Header("X-AUTH-TOKEN") String credentials, @Path("stone") int id, @Path("location") int location);
 
     @FormUrlEncoded
     @POST("stone/add")
     Call<DefaultResponse> addStone(@Header("X-AUTH-TOKEN") String credentials, @Field("location") String location);
 
     @Multipart
-    @POST("add-post")
+    @POST("post/add")
     Call<DefaultResponse> addPost(@Header("X-AUTH-TOKEN") String credentials, @Part MultipartBody.Part file, @Part("name") RequestBody requestBody, @Part("content") String content);
+
+    @DELETE("post/delete/{id}")
+    Call<DefaultResponse> deletePost(@Header("X-AUTH-TOKEN") String credentials, @Path("id") int id);
+
+
+    @DELETE("stone/clue/delete/{id}")
+    Call<DefaultResponse> deleteClue(@Header("X-AUTH-TOKEN") String credentials, @Path("id") int id);
 
     @Multipart
     @POST("stone/{stone}/add-clue/{location}")

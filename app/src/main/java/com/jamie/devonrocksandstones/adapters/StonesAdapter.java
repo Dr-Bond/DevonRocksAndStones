@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jamie.devonrocksandstones.R;
 import com.jamie.devonrocksandstones.activities.ClueActivity;
+import com.jamie.devonrocksandstones.activities.ProfileActivity;
 import com.jamie.devonrocksandstones.api.RetrofitClient;
 import com.jamie.devonrocksandstones.models.DefaultResponse;
 import com.jamie.devonrocksandstones.models.Stone;
@@ -60,7 +61,7 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
                 User user = SharedPrefManager.getInstance(mCtx).getUser();
 
                 //Make API call with the stored users access token and stones ID relating to the clicked on button
-                Call<DefaultResponse> call = RetrofitClient.getInstance().getApi().foundStone(user.getAccessToken(),stoneList.get(position).getId());
+                Call<DefaultResponse> call = RetrofitClient.getInstance().getApi().foundStone(user.getAccessToken(),stoneList.get(position).getId(),stoneList.get(position).getLocation());
 
                 //Call back response to see what the API returns
                 call.enqueue(new Callback<DefaultResponse>() {
@@ -68,12 +69,17 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
                     public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
 
                         //On error, return error message
-                        if (!response.body().isError()) {
+                        if (response.body().isError()) {
                             Toast.makeText(mCtx, "Failed to set stone as hidden.", Toast.LENGTH_LONG).show();
+                        } else {
+                            //On success, return message
+                            Toast.makeText(mCtx, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                            //Reload fragment
+                            Intent intent = new Intent(mCtx, ProfileActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.putExtra("fragment", "hidden_stones");
+                            mCtx.startActivity(intent);
                         }
-
-                        //On success, return error message
-                        Toast.makeText(mCtx, response.body().getMessage(), Toast.LENGTH_LONG).show();
                     }
 
                     @Override

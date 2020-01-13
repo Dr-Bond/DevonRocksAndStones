@@ -73,12 +73,21 @@ public class AddClueActivity extends AppCompatActivity {
         editTextContent = findViewById(R.id.editTextContent);
         imgView = findViewById(R.id.imageView);
 
-        btnUploadClue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadFile();
-            }
-        });
+        if(mediaPath != null) {
+            btnUploadClue.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    uploadFile();
+                }
+            });
+        } else {
+            btnUploadClue.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addClue();
+                }
+            });
+        }
 
         //Open image gallery to select image
         btnSelectImage.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +132,17 @@ public class AddClueActivity extends AppCompatActivity {
     }
 
     private void uploadFile() {
+
+        //Get text and remove whitespace
+        String content = editTextContent.getText().toString().trim();
+
+        //Content missing warning
+        if (content.isEmpty()) {
+            editTextContent.setError("Content is required");
+            editTextContent.requestFocus();
+            return;
+        }
+
         progressDialog.show();
 
         //Multipart the file
@@ -135,9 +155,6 @@ public class AddClueActivity extends AppCompatActivity {
 
         //Get stored user
         User user = SharedPrefManager.getInstance(this).getUser();
-
-        //Get text and remove whitespace
-        String content = editTextContent.getText().toString().trim();
 
         //Api call to upload file
         Call<DefaultResponse> call = RetrofitClient
@@ -156,7 +173,60 @@ public class AddClueActivity extends AppCompatActivity {
                 //Dismiss progress bar once uploaded and display post added
                 progressDialog.dismiss();
                 Toast.makeText(AddClueActivity.this, "Clue Added", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AddClueActivity.this, ClueActivity.class);
+                intent.putExtra("stone",stone);
+                intent.putExtra("location",location);
+                startActivity(intent);
+            }
 
+            @Override
+            public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                //Clue failed message
+                Toast.makeText(AddClueActivity.this, "Clue Failed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+    private void addClue() {
+
+        //Get text and remove whitespace
+        String content = editTextContent.getText().toString().trim();
+
+        //Content missing warning
+        if (content.isEmpty()) {
+            editTextContent.setError("Content is required");
+            editTextContent.requestFocus();
+            return;
+        }
+
+        progressDialog.show();
+
+        //Get stored user
+        User user = SharedPrefManager.getInstance(this).getUser();
+
+        //Api call to upload file
+        Call<DefaultResponse> call = RetrofitClient
+                .getInstance().getApi().addClue(
+                        user.getAccessToken(),
+                        stone,
+                        location,
+                        null,
+                        null,
+                        content
+                );
+
+        call.enqueue(new Callback<DefaultResponse>() {
+            @Override
+            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                //Dismiss progress bar once uploaded and display post added
+                progressDialog.dismiss();
+                Toast.makeText(AddClueActivity.this, "Clue Added", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AddClueActivity.this, ClueActivity.class);
+                intent.putExtra("stone",stone);
+                intent.putExtra("location",location);
+                startActivity(intent);
             }
 
             @Override

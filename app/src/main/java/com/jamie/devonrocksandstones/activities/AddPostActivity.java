@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,12 +67,21 @@ public class AddPostActivity extends AppCompatActivity {
         editTextContent = findViewById(R.id.editTextContent);
         imgView = findViewById(R.id.imageView);
 
-        btnUploadPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadFile();
-            }
-        });
+        if(mediaPath != null) {
+            btnUploadPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    uploadFile();
+                }
+            });
+        } else {
+            btnUploadPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addPost();
+                }
+            });
+        }
 
         //Open image gallery to select image
         btnSelectImage.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +101,6 @@ public class AddPostActivity extends AppCompatActivity {
         try {
             //If image is selected
             if (requestCode == 0 && resultCode == RESULT_OK && null != data) {
-
                 //Get image from uploaded data
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -116,6 +125,17 @@ public class AddPostActivity extends AppCompatActivity {
     }
 
     private void uploadFile() {
+
+        //Get text and remove whitespace
+        String content = editTextContent.getText().toString().trim();
+
+        //Content missing warning
+        if (content.isEmpty()) {
+            editTextContent.setError("Content is required");
+            editTextContent.requestFocus();
+            return;
+        }
+
         progressDialog.show();
 
         //Multipart the file
@@ -128,9 +148,6 @@ public class AddPostActivity extends AppCompatActivity {
 
         //Get stored user
         User user = SharedPrefManager.getInstance(this).getUser();
-
-        //Get text and remove whitespace
-        String content = editTextContent.getText().toString().trim();
 
         //Api call to upload file
         Call<DefaultResponse> call = RetrofitClient
@@ -147,6 +164,60 @@ public class AddPostActivity extends AppCompatActivity {
                 //Dismiss progress bar once uploaded and display post added
                 progressDialog.dismiss();
                 Toast.makeText(AddPostActivity.this, "Post Added", Toast.LENGTH_SHORT).show();
+                //Take to post fragment
+                Intent intent = new Intent(AddPostActivity.this, ProfileActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("fragment","posts");
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                //Post failed message
+                Toast.makeText(AddPostActivity.this, "Post Failed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+    private void addPost() {
+        //Get stored user
+        User user = SharedPrefManager.getInstance(this).getUser();
+
+        //Get text and remove whitespace
+        String content = editTextContent.getText().toString().trim();
+
+        //Content missing warning
+        if (content.isEmpty()) {
+            editTextContent.setError("Content is required");
+            editTextContent.requestFocus();
+            return;
+        }
+
+        progressDialog.show();
+
+        //Api call to upload file
+        Call<DefaultResponse> call = RetrofitClient
+                .getInstance().getApi().addPost(
+                        user.getAccessToken(),
+                        null,
+                        null,
+                        content
+                );
+
+        call.enqueue(new Callback<DefaultResponse>() {
+            @Override
+            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                //Dismiss progress bar once uploaded and display post added
+                progressDialog.dismiss();
+                Toast.makeText(AddPostActivity.this, "Post Added", Toast.LENGTH_SHORT).show();
+                //Take to post fragment
+                Intent intent = new Intent(AddPostActivity.this, ProfileActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("fragment","posts");
+                startActivity(intent);
 
             }
 

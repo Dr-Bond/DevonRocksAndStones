@@ -6,6 +6,7 @@ public class Clue {
     private String content;
     private String addedBy;
     private String image;
+    private boolean deletable;
 
     public Clue(int id, String content, String addedBy, String image) {
         this.id = id;
@@ -15,19 +16,26 @@ public class Clue {
     }
 
     public int getId() {
+
         return id;
     }
 
     public String getContent() {
+
         return content;
     }
 
     public String getAddedBy() {
+
         return addedBy;
     }
 
     public String getImage() {
+
         return image;
     }
 
+    public boolean isDeletable() {
+        return deletable;
+    }
 }

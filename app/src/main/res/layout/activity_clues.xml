@@ -11,8 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="85dp"
-        android:layout_marginRight="85dp"
         android:padding="10dp">
 
         <Button
@@ -24,6 +22,17 @@
             android:layout_marginBottom="15dp"
             android:background="@color/colorPrimaryDark"
             android:text="Add Clue"
+            android:textAllCaps="false"
+            android:textColor="@color/colorFormBackground" />
+        <Button
+            android:id="@+id/buttonBackToStones"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:background="@color/colorDanger"
+            android:text="Back"
             android:textAllCaps="false"
             android:textColor="@color/colorFormBackground" />
     </LinearLayout>

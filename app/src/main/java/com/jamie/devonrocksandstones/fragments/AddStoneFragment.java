@@ -2,7 +2,6 @@ package com.jamie.devonrocksandstones.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jamie.devonrocksandstones.R;
-import com.jamie.devonrocksandstones.activities.MainActivity;
 import com.jamie.devonrocksandstones.activities.ProfileActivity;
 import com.jamie.devonrocksandstones.api.RetrofitClient;
 import com.jamie.devonrocksandstones.models.DefaultResponse;
