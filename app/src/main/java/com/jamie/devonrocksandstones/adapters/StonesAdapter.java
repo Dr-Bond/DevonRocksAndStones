@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jamie.devonrocksandstones.R;
 import com.jamie.devonrocksandstones.activities.ClueActivity;
 import com.jamie.devonrocksandstones.activities.ProfileActivity;
+import com.jamie.devonrocksandstones.activities.RehideStoneActivity;
 import com.jamie.devonrocksandstones.api.RetrofitClient;
 import com.jamie.devonrocksandstones.models.DefaultResponse;
 import com.jamie.devonrocksandstones.models.Stone;
@@ -53,44 +54,13 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
         holder.textViewStone.setText("Stone: "+stone.getId()+" - "+stone.getArea());
         holder.textViewStatus.setText("Status: "+stone.getStatus());
 
-        //Listen for found stone button to be clicked
-        holder.buttonFoundStone.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        //Hide delete button if clue does not belong to user
+        if(!stone.isFindable()) {
+            holder.buttonFoundStone.setVisibility(View.GONE);
+            holder.buttonRehideStone.setVisibility(View.GONE);
+        }
 
-                //Get stored user
-                User user = SharedPrefManager.getInstance(mCtx).getUser();
-
-                //Make API call with the stored users access token and stones ID relating to the clicked on button
-                Call<DefaultResponse> call = RetrofitClient.getInstance().getApi().foundStone(user.getAccessToken(),stoneList.get(position).getId(),stoneList.get(position).getLocation());
-
-                //Call back response to see what the API returns
-                call.enqueue(new Callback<DefaultResponse>() {
-                    @Override
-                    public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-
-                        //On error, return error message
-                        if (response.body().isError()) {
-                            Toast.makeText(mCtx, "Failed to set stone as hidden.", Toast.LENGTH_LONG).show();
-                        } else {
-                            //On success, return message
-                            Toast.makeText(mCtx, response.body().getMessage(), Toast.LENGTH_LONG).show();
-                            //Reload fragment
-                            Intent intent = new Intent(mCtx, ProfileActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            intent.putExtra("fragment", "hidden_stones");
-                            mCtx.startActivity(intent);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<DefaultResponse> call, Throwable t) {
-
-                    }
-                });
-
-            }
-        });
-
+        //Listen for clue button to be clicked
         holder.buttonStoneClues.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Start new intent and pass stone ID to intent
@@ -99,6 +69,56 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
                 intent.putExtra("stone",stoneList.get(position).getId());
                 intent.putExtra("location",stoneList.get(position).getLocation());
                 context.startActivity(intent);
+            }
+        });
+
+        //Listen for rehide stone button to be clicked
+        holder.buttonRehideStone.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Start new intent and pass stone ID to intent
+                Context context = v.getContext();
+                Intent intent = new Intent(context, RehideStoneActivity.class);
+                intent.putExtra("stone",stoneList.get(position).getId());
+                intent.putExtra("location",stoneList.get(position).getLocation());
+                context.startActivity(intent);
+            }
+        });
+
+        //Listen for found stone button to be clicked
+        holder.buttonFoundStone.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            //Get stored user
+            User user = SharedPrefManager.getInstance(mCtx).getUser();
+
+            //Make API call with the stored users access token and stones ID relating to the clicked on button
+            Call<DefaultResponse> call = RetrofitClient.getInstance().getApi().foundStone(user.getAccessToken(),stoneList.get(position).getId(),stoneList.get(position).getLocation());
+
+            //Call back response to see what the API returns
+            call.enqueue(new Callback<DefaultResponse>() {
+                @Override
+                public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+
+                    //On error, return error message
+                    if (response.body().isError()) {
+                        Toast.makeText(mCtx, "Failed to set stone as hidden.", Toast.LENGTH_LONG).show();
+                    } else {
+                        //On success, return message
+                        Toast.makeText(mCtx, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                        //Reload fragment
+                        Intent intent = new Intent(mCtx, ProfileActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("fragment", "hidden_stones");
+                        mCtx.startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DefaultResponse> call, Throwable t) {
+
+                }
+            });
+
             }
         });
 
@@ -116,6 +136,7 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
         TextView textViewStatus;
         Button buttonFoundStone;
         Button buttonStoneClues;
+        Button buttonRehideStone;
 
         public StonesViewHolder(View itemView) {
             super(itemView);
@@ -124,7 +145,7 @@ public class StonesAdapter extends RecyclerView.Adapter<StonesAdapter.StonesView
             textViewStatus = itemView.findViewById(R.id.textViewStatus);
             buttonFoundStone = itemView.findViewById(R.id.buttonFoundStone);
             buttonStoneClues = itemView.findViewById(R.id.buttonStoneClues);
-
+            buttonRehideStone = itemView.findViewById(R.id.buttonRehideStone);
         }
     }
 }

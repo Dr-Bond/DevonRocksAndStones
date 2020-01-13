@@ -56,6 +56,10 @@ public interface Api {
     Call<DefaultResponse> foundStone(@Header("X-AUTH-TOKEN") String credentials, @Path("stone") int id, @Path("location") int location);
 
     @FormUrlEncoded
+    @POST("stone/{stone}/rehide/{location}")
+    Call<DefaultResponse> rehideStone(@Header("X-AUTH-TOKEN") String credentials, @Path("stone") int id, @Path("location") int location, @Field("newLocation") String area);
+
+    @FormUrlEncoded
     @POST("stone/add")
     Call<DefaultResponse> addStone(@Header("X-AUTH-TOKEN") String credentials, @Field("location") String location);
 

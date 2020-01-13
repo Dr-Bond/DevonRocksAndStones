@@ -26,6 +26,7 @@
         <activity android:name=".activities.AddPostActivity" />
         <activity android:name=".activities.ClueActivity" />
         <activity android:name=".activities.AddClueActivity" />
+        <activity android:name=".activities.RehideStoneActivity" />
     </application>
 
 </manifest>

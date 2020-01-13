@@ -6,6 +6,7 @@ public class Stone {
     private int location;
     private String status;
     private String area;
+    private boolean findable;
 
     public Stone(int id, int location, String status, String area) {
         this.id = id;
@@ -28,5 +29,9 @@ public class Stone {
 
     public String getArea() {
         return area;
+    }
+
+    public boolean isFindable() {
+        return findable;
     }
 }
