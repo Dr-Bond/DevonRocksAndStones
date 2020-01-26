@@ -12,8 +12,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
 
-    //private static final String BASE_URL = "http://devon-rocks-and-stones.192.168.1.14.xip.io:8888/api/";
-    private static final String BASE_URL = "http://devon-rocks-and-stones.192.168.43.3.xip.io:8888/api/";
+    private static final String BASE_URL = "http://devon-rocks-and-stones.192.168.1.15.xip.io:8888/api/";
+    //private static final String BASE_URL = "http://devon-rocks-and-stones.192.168.43.3.xip.io:8888/api/";
     private static RetrofitClient mInstance;
     private Retrofit retrofit;
 

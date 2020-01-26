@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (password.length() < 6) {
-            editTextPassword.setError("Password should be atleast 6 character long");
+            editTextPassword.setError("Password should be at least 6 character long");
             editTextPassword.requestFocus();
             return;
         }

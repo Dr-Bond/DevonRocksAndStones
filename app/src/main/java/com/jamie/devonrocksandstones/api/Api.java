@@ -16,13 +16,14 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface Api {
 
     @FormUrlEncoded
-    @POST("register")
+    @PUT("register")
     Call<DefaultResponse> createUser(
             @Field("email") String email,
             @Field("password") String password,
@@ -52,7 +53,7 @@ public interface Api {
     @GET("stone/{stone}/clues/{location}")
     Call<ClueResponse> getClues(@Header("X-AUTH-TOKEN") String credentials, @Path("stone") int id, @Path("location") int location);
 
-    @GET("stone/{stone}/found/{location}")
+    @POST("stone/{stone}/found/{location}")
     Call<DefaultResponse> foundStone(@Header("X-AUTH-TOKEN") String credentials, @Path("stone") int id, @Path("location") int location);
 
     @FormUrlEncoded
